@@ -4,13 +4,23 @@ error_reporting(0);
 <h1>Twitter Fetch</h1>HI<br>Enter the name of movie<br><br>Please enter the movie name: <form method="post"><input type="text" name="id" value="<?php echo $_POST['id']; ?>"><input type="submit"></form><br>
 <h2>
 <?php
-	if(isset($_POST['id']))
+if(isset($_POST['id']))
 	{
-				$id = 'isset($_POST["id"])';
+				$id = $_POST["id"];
+$tweet_max_count = 10;
 				echo '<br><br>Getting Tweets about [$id]...<br>';
-				$site = "http://www.loklak.org/api/search.json";
-				$get = file_get_contents("[$site]?q=[id]");
-				$data = json_decode($json, true);
-				return $data['text'];
+				$json = json_decode(file_get_contents("http://www.loklak.org/api/search.json?q=$input"),true);
+echo '<ul>';
+$i = 0;
+				foreach($data['statuses'] as $tweet)
+{
+if($i == $tweet_max_count)
+{
+break;
+}
+$i++;
+echo '<li>' . $i . ' - From @' . $tweet['user']['screen_name'] . ' - ' . $tweet['text'] . '</li>';
+}
+echo '</ul>';
 	}
-?>	
+	?>	
